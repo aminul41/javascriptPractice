@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .red-div {
+        position: absolute;
+        background-color: red;
+        width: 100px;
+        height: 100px;
+        left: 50px;
+        top: 50px;
+      }
+
+      .dynamic-div {
+        position: absolute;
+        background-color: blue; /* Just for visibility */
+        width: 150px;
+        height: 150px;
+        left: 100px;
+        top: 100px;
+      }
+
+      .inner-div {
+        position: absolute;
+        background-color: green; /* For visibility */
+        width: 10px;
+        height: 10px;
+      }
+    </style>
+    <title>Move Inner Divs</title>
+  </head>
+  <body>
+    <div id="red-div" class="red-div"></div>
+    <div id="dynamic-div" class="dynamic-div"></div>
+    <div id="inner-div" class="inner-div"></div>
+    <div id="inner-div-2" class="inner-div"></div>
+
+    <script>
+      function findIntersectionPoints() {
+        const redDiv = document.getElementById("red-div");
+        const dynamicDiv = document.getElementById("dynamic-div");
+        const innerDiv = document.getElementById("inner-div");
+        const innerDiv2 = document.getElementById("inner-div-2");
+
+        // Get bounding rectangles
+        const redRect = redDiv.getBoundingClientRect();
+        const dynamicRect = dynamicDiv.getBoundingClientRect();
+
+        console.log(redRect);
+        console.log(dynamicRect);
+        // Check for intersection
+        if (
+          redRect.right > dynamicRect.left &&
+          redRect.left < dynamicRect.right &&
+          redRect.bottom > dynamicRect.top &&
+          redRect.top < dynamicRect.bottom
+        ) {
+          // Top-Right Corner
+          const topMiddleX = Math.min(redRect.right, dynamicRect.right);
+          const topY = Math.max(redRect.top, dynamicRect.top);
+          innerDiv.style.left = `${topMiddleX}px`;
+          innerDiv.style.top = `${topY}px`;
+
+          // Bottom-Left Corner
+          const leftX = Math.max(redRect.left, dynamicRect.left);
+          const bottomY = Math.min(redRect.bottom, dynamicRect.bottom);
+          innerDiv2.style.left = `${leftX}px`;
+          innerDiv2.style.top = `${bottomY}px`;
+
+          // // Top-Left Corner
+          // intersectionPoints.push({
+          //   x: Math.max(redRect.left, dynamicRect.left),
+          //   y: Math.max(redRect.top, dynamicRect.top),
+          // });
+
+          // // Top-Right Corner
+          // intersectionPoints.push({
+          //   x: Math.min(redRect.right, dynamicRect.right),
+          //   y: Math.max(redRect.top, dynamicRect.top),
+          // });
+
+          // // Bottom-Left Corner
+          // intersectionPoints.push({
+          //   x: Math.max(redRect.left, dynamicRect.left),
+          //   y: Math.min(redRect.bottom, dynamicRect.bottom),
+          // });
+
+          // // Bottom-Right Corner
+          // intersectionPoints.push({
+          //   x: Math.min(redRect.right, dynamicRect.right),
+          //   y: Math.min(redRect.bottom, dynamicRect.bottom),
+          // });
+        }
+      }
+
+      // Call the function after the DOM is loaded
+      document.addEventListener("DOMContentLoaded", findIntersectionPoints);
+    </script>
+  </body>
+</html>
